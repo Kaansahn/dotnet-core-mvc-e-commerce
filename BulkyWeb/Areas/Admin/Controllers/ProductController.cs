@@ -4,6 +4,7 @@ using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -21,17 +22,19 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
 
+            return View(objProductList);
+        }
+
+        public IActionResult Create()
+        {
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             });
 
-            return View(objProductList);
-        }
+            ViewBag.CategoryList = CategoryList;
 
-        public IActionResult Create()
-        {
             return View();
         }
 
